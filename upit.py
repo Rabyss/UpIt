@@ -29,25 +29,25 @@ API_KEY = "YOUR_API_KEY"
 URL = "https://api.imgur.com/3/upload.json"
 TITLE = "Screenshot"
 
+if __name__ == "__main__":
+    with open(sys.argv[1], 'rb') as image:
+        b64_image = base64.b64encode(image.read())
 
-with open(sys.argv[1], 'rb') as image:
-    b64_image = base64.b64encode(image.read())
+    payload = {"key": API_KEY,
+               "image": b64_image,
+               "title": TITLE}
 
-payload = {"key": API_KEY,
-           "image": b64_image,
-           "title": TITLE}
-
-req_result = None
-try:
-    req_result = requests.post(URL, data=payload, headers={'Authorization': "Client-ID YOUR_CLIENT_ID"})
-except requests.exceptions.ConnectionError:
-    notify_error("Connection Error", "Verify your internet connection")
-
-if req_result is not None:
-    result_json = json.loads(req_result.text)
-
+    req_result = None
     try:
-        to_clipboard(result_json["data"]["link"])
-        notify_info("Upload succeeded", "The URL of your upload has been placed in your clipboard.")
-    except KeyError:
-        notify_error("Request malformed", "Imgur answered \"" + result_json["data"]["error"] + "\"")
+        req_result = requests.post(URL, data=payload, headers={'Authorization': "Client-ID YOUR_CLIENT_ID"})
+    except requests.exceptions.ConnectionError:
+        notify_error("Connection Error", "Verify your internet connection")
+
+    if req_result is not None:
+        result_json = json.loads(req_result.text)
+
+        try:
+            to_clipboard(result_json["data"]["link"])
+            notify_info("Upload succeeded", "The URL of your upload has been placed in your clipboard.")
+        except KeyError:
+            notify_error("Request malformed", "Imgur answered \"" + result_json["data"]["error"] + "\"")
