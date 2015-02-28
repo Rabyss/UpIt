@@ -26,6 +26,7 @@ def notify_error(title: str, msg: str):
 
 
 API_KEY = "YOUR_API_KEY"
+CLIENT_ID = "YOUR_CLIENT_ID"
 URL = "https://api.imgur.com/3/upload.json"
 TITLE = "Screenshot"
 
@@ -39,7 +40,7 @@ if __name__ == "__main__":
 
     req_result = None
     try:
-        req_result = requests.post(URL, data=payload, headers={'Authorization': "Client-ID YOUR_CLIENT_ID"})
+        req_result = requests.post(URL, data=payload, headers={'Authorization': "Client-ID " + CLIENT_ID })
     except requests.exceptions.ConnectionError:
         notify_error("Connection Error", "Verify your internet connection")
 
