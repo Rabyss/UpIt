@@ -29,6 +29,8 @@ API_KEY = "YOUR_API_KEY"
 CLIENT_ID = "YOUR_CLIENT_ID"
 URL = "https://api.imgur.com/3/upload.json"
 TITLE = "Screenshot"
+TIMEOUT = 10
+
 
 if __name__ == "__main__":
     with open(sys.argv[1], 'rb') as image:
@@ -40,7 +42,8 @@ if __name__ == "__main__":
 
     req_result = None
     try:
-        req_result = requests.post(URL, data=payload, headers={'Authorization': "Client-ID " + CLIENT_ID })
+        req_result = requests.post(URL, data=payload, headers={'Authorization': 
+"Client-ID " + CLIENT_ID }, timeout = TIMEOUT)
     except requests.exceptions.ConnectionError:
         notify_error("Connection Error", "Verify your internet connection")
 
